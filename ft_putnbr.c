@@ -6,7 +6,7 @@
 /*   By: pprates <pprates@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/24 12:55:02 by pprates           #+#    #+#             */
-/*   Updated: 2026/11/24 12:55:03 by pprates          ###   ########.fr       */
+/*   Updated: 2026/11/24 17:46:45 by pprates          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,29 @@
 int	ft_putnbr(int nb)
 {
 	long	nbr;
-	char	c;
+	int		i;
 	int		res;
-	int		written;
-	res = 0;
+
+	i = 0;
 	nbr = nb;
 	if (nbr < 0)
 	{
 		nbr = nbr * -1;
-		written = ft_putchar('-');
-		if (written < 0)
+		res = ft_putchar('-');
+		if (res == -1)
 			return (-1);
+		i += res;
 	}
 	if (nbr >= 10)
 	{
-		written = ft_putnbr(nbr / 10);
-		if (written < 0)
+		res = ft_putnbr(nbr / 10);
+		if (res == -1)
 			return (-1);
-		res += written;
+		i += res;
 	}
-	written = ft_putchar(nbr % 10 + '0');
-	if (written < 0)
+	res = ft_putchar(nbr % 10 + '0');
+	if (res == -1)
 		return (-1);
-	return (res + written);
+	i += res;
+	return (i);
 }
-

@@ -6,7 +6,7 @@
 /*   By: pprates <pprates@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/24 12:54:50 by pprates           #+#    #+#             */
-/*   Updated: 2026/11/24 12:54:51 by pprates          ###   ########.fr       */
+/*   Updated: 2026/11/24 15:34:23 by pprates          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,28 @@
 
 static void	print_arg(const char *str, int *size, va_list *args)
 {
+	int	ret;
+
 	if (*str == 's')
-		*size += ft_putstr(va_arg(*args, char *));
+		ret = ft_putstr(va_arg(*args, char *));
 	else if (*str == 'c')
-		*size += ft_putchar(va_arg(*args, int));
+		ret = ft_putchar(va_arg(*args, int));
 	else if (*str == 'd' || *str == 'i')
-		*size += ft_putnbr(va_arg(*args, int));
+		ret = ft_putnbr(va_arg(*args, int));
 	else if (*str == 'u')
-		*size += ft_putnbr_u(va_arg(*args, unsigned int));
+		ret = ft_putnbr_u(va_arg(*args, unsigned int));
 	else if (*str == 'x' || *str == 'X')
-		*size += ft_hexa(va_arg(*args, unsigned int), *str);
+		ret = ft_hexa(va_arg(*args, unsigned int), *str);
 	else if (*str == 'p')
-		*size += ft_putptr(va_arg(*args, unsigned long long));
+		ret = ft_putptr(va_arg(*args, unsigned long long));
 	else if (*str == '%')
-		*size += ft_putchar('%');
+		ret = ft_putchar('%');
+	else
+		return ;
+	if (ret < 0)
+		*size = -1;
+	else if (*size != -1)
+		*size += ret;
 }
 
 int	ft_printf(const char *str, ...)
@@ -37,13 +45,19 @@ int	ft_printf(const char *str, ...)
 
 	size = 0;
 	va_start(args, str);
-	while (*str)
+	while (*str && size != -1)
 	{
 		if (*str == '%' && str++)
 			print_arg(str, &size, &args);
 		else
-			size += ft_putchar(*str);
+		{
+			if (ft_putchar(*str) == -1)
+				size = -1;
+			else if (size != -1)
+				size++;
+		}
 		str++;
 	}
-	return (va_end(args), size);
+	va_end(args);
+	return (size);
 }
