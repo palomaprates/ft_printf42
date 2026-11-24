@@ -6,7 +6,7 @@
 /*   By: pprates <pprates@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/24 12:55:02 by pprates           #+#    #+#             */
-/*   Updated: 2026/11/24 17:46:45 by pprates          ###   ########.fr       */
+/*   Updated: 2026/11/24 18:18:30 by pprates          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,5 @@ int	ft_putnbr(int nb)
 	res = ft_putchar(nbr % 10 + '0');
 	if (res == -1)
 		return (-1);
-	i += res;
-	return (i);
+	return (i + res);
 }
